@@ -44,6 +44,33 @@ controller.hears('help', ['direct_message', 'direct_mention'], function (bot, me
   bot.reply(message, help)
 })
 
+controller.hears(['call me (.*)'],'direct_message,direct_mention,mention',function(bot, message) {
+    var matches = message.text.match(/call me (.*)/i);
+    var name = matches[1];
+    controller.storage.users.get(message.user,function(err, user) {
+        if (!user) {
+            user = {
+                id: message.user,
+            };
+        }
+        user.name = name;
+        controller.storage.users.save(user,function(err, id) {
+            bot.reply(message,'Got it. I will call you ' + user.name + ' from now on.');
+        });
+    });
+});
+
+controller.hears(['what is my name','who am i'],'direct_message,direct_mention,mention',function(bot, message) {
+
+    controller.storage.users.get(message.user,function(err, user) {
+        if (user && user.name) {
+            bot.reply(message,'Your name is ' + user.name);
+        } else {
+            bot.reply(message,'I don\'t know yet!');
+        }
+    });
+});
+
 controller.hears(['attachment'], ['direct_message', 'direct_mention'], function (bot, message) {
   var text = 'Beep Beep Boop is a ridiculously simple hosting platform for your Slackbots.'
   var attachments = [{
