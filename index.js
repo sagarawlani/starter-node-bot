@@ -66,7 +66,7 @@ controller.hears(['what is my name','who am i'],'direct_message,direct_mention,m
         if (user && user.name) {
             bot.reply(message,'Your name is ' + user.name);
         } else {
-            bot.reply(message,'I don\'t know yet!');
+            bot.reply(message,'I'm a bot named Hero. I'm here to fulfil your travel wishes! :)');
         }
     });
 });
